@@ -1,4 +1,5 @@
 export TS-AUTH-KEY=""
-cd ~/LD-ToyPad-Emulator
-node index.js
+tailscale login authkey=${TS-AUTH-KEY} 
 tailscale up
+tailscale serve 80
+tailscale down
