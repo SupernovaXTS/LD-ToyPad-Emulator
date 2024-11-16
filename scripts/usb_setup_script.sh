@@ -1,7 +1,6 @@
 #!/bin/bash
 
 # Created by ags131
-$HOSTNAME = hostnamectl | grep 'hostname'
 cd /sys/kernel/config/usb_gadget
 mkdir g1
 cd g1
@@ -27,4 +26,3 @@ ln -s functions/hid.g0/ configs/c.1/
 #ln -s functions/ecm.g2/ configs/c.1/
 UDC=$(ls /sys/class/udc)
 #rmmod libcomposite g_ether u_ether usb_f_rndis
-sleep 3;

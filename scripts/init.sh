@@ -6,4 +6,4 @@ sudo apt install -y git # git
 git config pull.rebase false
 git clone $GIT_URL
 cd LD-ToyPad-Emulator
-bash setup1.sh
+sudo bash setup1.sh
