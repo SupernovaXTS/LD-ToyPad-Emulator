@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Created by ags131
-
+$HOSTNAME = hostnamectl | grep 'hostname'
 cd /sys/kernel/config/usb_gadget
 mkdir g1
 cd g1
