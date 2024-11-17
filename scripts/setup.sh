@@ -1,14 +1,11 @@
 sudo apt update
 sudo apt install -y git usbip hwdata curl python build-essential libusb-1.0-0-dev libudev-dev
-echo "usbip-core" | sudo tee -a /etc/modules
-echo "usbip-vudc" | sudo tee -a /etc/modules
-echo "vhci-hcd" | sudo tee -a /etc/modules
-
+modules=("usbip-core" "usbip-vudc" "vhci-hcd" "dwc2" "libcomposite" "usb_f_rndis")
+for module in "${modules[@]}"; do
+    echo "$module" | sudo tee -a /etc/modules
+    sudo modprobe "$module"
+done
 echo "dtoverlay=dwc2" | sudo tee -a /boot/config.txt
-echo "dwc2" | sudo tee -a /etc/modules
-echo "libcomposite" | sudo tee -a /etc/modules
-echo "usb_f_rndis" | sudo tee -a /etc/modules
-
 curl -fsSL https://tailscale.com/install.sh | sh
 curl https://raw.githubusercontent.com/virtualhere/script/main/install_server | sh
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash
@@ -23,13 +20,16 @@ npm install --global node-gyp@8.4.1
 npm config set node_gyp $(npm prefix -g)/lib/node_modules/node-gyp/bin/node-gyp.js
 # Grab depends for program
 npm install
-mode=usbip
+mode="usbip"          # Set mode to usbip
+s1="scripts/toypad_init1.sh"
+s2="scripts/toypad_init2.sh"
+# Combine scripts and insert mode declaration in the middle
 {
-    cat "toypad_init1.sh"
+    cat "$s1"
     echo "mode=\"$mode\""
-    cat "toypad_init2.sh"
+    cat "$s2"
 } > toypad_init.sh
-cp usb_setup_script.sh /usr/local/bin/toypad_usb_setup.sh
+cp toypad_init.sh /usr/local/bin/toypad_usb_setup.sh
 chmod +x /usr/local/bin/toypad_usb_setup.sh
 (crontab -l 2>/dev/null; echo "@reboot sudo /usr/local/bin/toypad_usb_setup.sh") | crontab -
 shutdown -r now
