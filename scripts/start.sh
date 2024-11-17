@@ -1,1 +1,2 @@
-TS_AUTH_KEY=
+tailscale up
+node ../index.js
