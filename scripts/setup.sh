@@ -1,3 +1,14 @@
+choose_mode() {
+    merge_lists() { for i in "${!1[@]}"; do echo "${1[$i]} (${2[$i]})"; done }
+    choices=("Physical" "Vhere" "Usbip")
+    descriptions=("For physical device setup." "For virtual host emulation (Vhere)." "For USB over IP (Linux/Steamdeck).")
+    switch=($(merge_lists choices descriptions))
+    echo "Please choose an install mode:"
+    select choice in "${switch[@]}"; do
+        [[ -n "$choice" ]] && mode=$(echo "$choice" | sed 's/ (\([^)]*\))/\1/') && break || echo "Invalid choice."
+    done
+    echo "$mode"
+}
 sudo apt update
 sudo apt install -y git usbip hwdata curl python build-essential libusb-1.0-0-dev libudev-dev
 modules=("usbip-core" "usbip-vudc" "vhci-hcd" "dwc2" "libcomposite" "usb_f_rndis")
@@ -20,7 +31,7 @@ npm install --global node-gyp@8.4.1
 npm config set node_gyp $(npm prefix -g)/lib/node_modules/node-gyp/bin/node-gyp.js
 # Grab depends for program
 npm install
-mode="usbip"          # Set mode to usbip
+mode=$(choose_mode)          # Set mode
 s1="scripts/toypad_init1.sh"
 s2="scripts/toypad_init2.sh"
 # Combine scripts and insert mode declaration in the middle
