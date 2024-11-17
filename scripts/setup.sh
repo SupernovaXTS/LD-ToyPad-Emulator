@@ -29,7 +29,7 @@ s2="scripts/toypad_init2.sh"
     echo "mode=\"$mode\""
     cat "$s2"
 } > toypad_init.sh
-cp toypad_init.sh /usr/local/bin/toypad_usb_setup.sh
-chmod +x /usr/local/bin/toypad_usb_setup.sh
-(crontab -l 2>/dev/null; echo "@reboot sudo /usr/local/bin/toypad_usb_setup.sh") | crontab -
+cp toypad_init.sh /usr/local/bin/toypad_init.sh
+chmod +x /usr/local/bin/toypad_init.sh
+(crontab -l 2>/dev/null; echo "@reboot sudo /usr/local/bin/toypad_init.sh") | crontab -
 shutdown -r now
