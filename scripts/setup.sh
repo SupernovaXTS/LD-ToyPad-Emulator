@@ -16,9 +16,12 @@ for module in "${modules[@]}"; do
     echo "$module" | sudo tee -a /etc/modules
     sudo modprobe "$module"
 done
+mode=$(choose_mode)          # Set mode
 echo "dtoverlay=dwc2" | sudo tee -a /boot/config.txt
 curl -fsSL https://tailscale.com/install.sh | sh
-curl https://raw.githubusercontent.com/virtualhere/script/main/install_server | sh
+if [ "$mode" == "vhere" ]; then
+    curl https://raw.githubusercontent.com/virtualhere/script/main/install_server | sh
+fi
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash
 # Node install
 export NVM_DIR="$HOME/.nvm"
@@ -31,7 +34,7 @@ npm install --global node-gyp@8.4.1
 npm config set node_gyp $(npm prefix -g)/lib/node_modules/node-gyp/bin/node-gyp.js
 # Grab depends for program
 npm install
-mode=$(choose_mode)          # Set mode
+
 s1="scripts/toypad_init1.sh"
 s2="scripts/toypad_init2.sh"
 # Combine scripts and insert mode declaration in the middle
