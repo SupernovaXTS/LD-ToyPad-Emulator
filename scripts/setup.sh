@@ -23,7 +23,12 @@ npm install --global node-gyp@8.4.1
 npm config set node_gyp $(npm prefix -g)/lib/node_modules/node-gyp/bin/node-gyp.js
 # Grab depends for program
 npm install
-
+mode=usbip
+{
+    cat "toypad_init1.sh"
+    echo "mode=\"$mode\""
+    cat "toypad_init2.sh"
+} > toypad_init.sh
 cp usb_setup_script.sh /usr/local/bin/toypad_usb_setup.sh
 chmod +x /usr/local/bin/toypad_usb_setup.sh
 (crontab -l 2>/dev/null; echo "@reboot sudo /usr/local/bin/toypad_usb_setup.sh") | crontab -
